@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "707720490987",
+    "project_id": "cinema-bono",
+    "storage_bucket": "cinema-bono.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707720490987:android:b9174b5e329da4586b33ae",
+        "android_client_info": {
+          "package_name": "com.exa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXE34dP1_7GDYYTJ61yEuzF1pOXAkpG6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707720490987:android:37c97c290b7094056b33ae",
+        "android_client_info": {
+          "package_name": "com.example.cinema_bono"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXE34dP1_7GDYYTJ61yEuzF1pOXAkpG6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
