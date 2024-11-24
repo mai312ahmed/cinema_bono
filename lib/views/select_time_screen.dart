@@ -1,3 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cinema_bono/methods/get_data_methods.dart';
+import 'package:cinema_bono/methods/helper_methods.dart';
+import 'package:cinema_bono/methods/login_method.dart';
+import 'package:cinema_bono/views/home_screen.dart';
 import 'package:cinema_bono/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -87,6 +93,7 @@ class SelectTimeScreenState extends State<SelectTimeScreen> {
                                         widget.movieDetails["hallIds"][index];
                                     seatsStatus = List<bool>.filled(
                                         selectedHall == "1" ? 20 : 50, false);
+                                    selectedSeats = [];
                                   });
                                 },
                                 child: Hall(
@@ -101,12 +108,17 @@ class SelectTimeScreenState extends State<SelectTimeScreen> {
                     if (selectedHall != null)
                       Wrap(
                         children: List.generate(
-                          seatsStatus!.length,
+                          seatsStatus.length,
                           (index) {
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
                                   seatsStatus[index] = !seatsStatus[index];
+                                  if (seatsStatus[index]) {
+                                    selectedSeats.add(index);
+                                  } else {
+                                    selectedSeats.remove(index);
+                                  }
                                 });
                               },
                               child: Seat(
@@ -117,17 +129,57 @@ class SelectTimeScreenState extends State<SelectTimeScreen> {
                         ),
                       ),
                     const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (selectedDate != null && selectedTime != null) {
-                          // حفظ القيم المحددة
-                          print('Selected Date: $selectedDate');
-                          print('Selected Time: $selectedTime');
-                        } else {
-                          print('Please select both date and time.');
-                        }
-                      },
-                      child: const Text('Save'),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (selectedDate != null &&
+                              selectedTime != null &&
+                              selectedHall != null &&
+                              selectedSeats.isNotEmpty) {
+                            showloading(context);
+                            var userName = await getUserInfo();
+                            List<Map<String, dynamic>> movies =
+                                await getMovies();
+                            Navigator.pop(context);
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    title: Center(
+                                        child: Icon(
+                                      Icons.done,
+                                      color: Colors.green,
+                                      size: 50,
+                                    )),
+                                    content: Text("Booking successful!"),
+                                  );
+                                });
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen(
+                                        movies: movies,
+                                        userName: userName ?? "Guest",
+                                      )),
+                            );
+                          } else {
+                            showDialogCustom(context,
+                                "Please select a date, time, hall, and at least one seat.");
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          'Book',
+                          style: TextStyle(fontSize: 18, color: Colors.purple),
+                        ),
+                      ),
                     ),
                   ],
                 ),

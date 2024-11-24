@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:cinema_bono/methods/get_data_methods.dart';
 import 'package:cinema_bono/methods/helper_methods.dart';
 import 'package:cinema_bono/views/splash_screen.dart';
 import 'package:flutter/material.dart';
