@@ -5,10 +5,12 @@ import 'package:intl/intl.dart';
 List<int> selectedSeats = [];
 
 class SelectTimeScreen extends StatefulWidget {
-  const SelectTimeScreen(
-      {super.key, required this.movieDetails, required this.hallsDetails});
+  const SelectTimeScreen({
+    super.key,
+    required this.movieDetails,
+  });
   final Map<String, dynamic> movieDetails;
-  final Map<String, dynamic> hallsDetails;
+
   @override
   SelectTimeScreenState createState() => SelectTimeScreenState();
 }
@@ -35,6 +37,7 @@ class SelectTimeScreenState extends State<SelectTimeScreen> {
     }
   }
 
+  late List<bool> seatsStatus;
   String? selectedHall;
   @override
   Widget build(BuildContext context) {
@@ -82,6 +85,8 @@ class SelectTimeScreenState extends State<SelectTimeScreen> {
                                   setState(() {
                                     selectedHall =
                                         widget.movieDetails["hallIds"][index];
+                                    seatsStatus = List<bool>.filled(
+                                        selectedHall == "1" ? 20 : 50, false);
                                   });
                                 },
                                 child: Hall(
@@ -96,16 +101,22 @@ class SelectTimeScreenState extends State<SelectTimeScreen> {
                     if (selectedHall != null)
                       Wrap(
                         children: List.generate(
-                          20,
+                          seatsStatus!.length,
                           (index) {
-                            return Seat(
-                              seatNumber: index + 1,
-                              isSelected: false,
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  seatsStatus[index] = !seatsStatus[index];
+                                });
+                              },
+                              child: Seat(
+                                isSelected: seatsStatus[index],
+                              ),
                             );
                           },
                         ),
                       ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         if (selectedDate != null && selectedTime != null) {
@@ -189,10 +200,8 @@ class Hall extends StatelessWidget {
 class Seat extends StatelessWidget {
   const Seat({
     super.key,
-    required this.seatNumber,
     required this.isSelected,
   });
-  final int seatNumber;
 
   final bool isSelected;
 
@@ -202,12 +211,12 @@ class Seat extends StatelessWidget {
         ? const Icon(
             Icons.chair,
             color: Colors.white,
-            size: 35,
+            size: 50,
           )
         : const Icon(
             Icons.chair_outlined,
             color: Colors.white,
-            size: 35,
+            size: 50,
           );
   }
 }

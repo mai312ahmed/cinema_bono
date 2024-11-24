@@ -96,14 +96,13 @@ class DetailsScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         showloading(context);
-                        var halls = await getHalls();
+
                         Navigator.pop(context);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SelectTimeScreen(
                               movieDetails: movieDetails,
-                              hallsDetails: halls,
                             ),
                           ),
                         );

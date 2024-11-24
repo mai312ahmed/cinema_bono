@@ -31,12 +31,3 @@ Future<List<Map<String, dynamic>>> getMovies() async {
     return [];
   }
 }
-
-Future<Map<String, dynamic>> getHalls() async {
-  QuerySnapshot snapshot = await _firestore.collection('halls').get();
-  Map<String, dynamic> halls = {};
-  for (var doc in snapshot.docs) {
-    halls[doc.id] = doc.data();
-  }
-  return halls;
-}
