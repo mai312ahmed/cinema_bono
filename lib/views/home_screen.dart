@@ -1,4 +1,6 @@
-import 'package:cinema_bono/views/splash_screen.dart';
+import 'package:cinema_bono/common%20widget/background.dart';
+import 'package:cinema_bono/views/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'details_screen.dart';
 
@@ -20,14 +22,32 @@ class HomeScreen extends StatelessWidget {
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hi $userName",
-                        style:
-                            const TextStyle(fontSize: 24, color: Colors.white)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Hi $userName",
+                            style: const TextStyle(
+                                fontSize: 24, color: Colors.white)),
+                        IconButton(
+                            onPressed: () {
+                              FirebaseAuth.instance.signOut();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.logout,
+                              color: Colors.white,
+                            ))
+                      ],
+                    ),
                     const Text("New Movies ",
                         style: TextStyle(fontSize: 24, color: Colors.white)),
                     SizedBox(
@@ -54,6 +74,29 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class MovieDetailsText extends StatelessWidget {
+  const MovieDetailsText({
+    super.key,
+    required this.lable,
+    required this.text,
+  });
+
+  final String lable;
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '$lable : $text',
+      style: const TextStyle(
+        fontSize: 16,
+        color: Colors.grey,
+      ),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     );
   }
 }
@@ -98,44 +141,39 @@ class MovieCard extends StatelessWidget {
                 height: 160,
                 width: 120,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      movie['name'],
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        movie['name'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Duration : ${movie['duration']}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
+                      const SizedBox(height: 20),
+                      MovieDetailsText(
+                        lable: "Duration",
+                        text: movie['duration'],
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Genre: ${movie['genre']}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
+                      const SizedBox(height: 4),
+                      MovieDetailsText(
+                        lable: "Genre",
+                        text: movie['genre'],
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Price: ${movie['price']}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
+                      const SizedBox(height: 4),
+                      MovieDetailsText(
+                        lable: "Price",
+                        text: movie['price'],
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                  ],
+                      const SizedBox(height: 5),
+                    ],
+                  ),
                 ),
               ),
             ],

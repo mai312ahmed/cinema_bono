@@ -3,8 +3,9 @@
 import 'package:cinema_bono/methods/get_data_methods.dart';
 import 'package:cinema_bono/methods/helper_methods.dart';
 import 'package:cinema_bono/methods/login_method.dart';
+import 'package:cinema_bono/common%20widget/background.dart';
+import 'package:cinema_bono/common%20widget/general_button.dart';
 import 'package:cinema_bono/views/home_screen.dart';
-import 'package:cinema_bono/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -129,57 +130,43 @@ class SelectTimeScreenState extends State<SelectTimeScreen> {
                         ),
                       ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (selectedDate != null &&
-                              selectedTime != null &&
-                              selectedHall != null &&
-                              selectedSeats.isNotEmpty) {
-                            showloading(context);
-                            var userName = await getUserInfo();
-                            List<Map<String, dynamic>> movies =
-                                await getMovies();
-                            Navigator.pop(context);
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const AlertDialog(
-                                    title: Center(
-                                        child: Icon(
-                                      Icons.done,
-                                      color: Colors.green,
-                                      size: 50,
+                    GeneralButton(
+                      onPressed: () async {
+                        if (selectedDate != null &&
+                            selectedTime != null &&
+                            selectedHall != null &&
+                            selectedSeats.isNotEmpty) {
+                          showloading(context);
+                          var userName = await getUserInfo();
+                          List<Map<String, dynamic>> movies = await getMovies();
+                          Navigator.pop(context);
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  title: Center(
+                                      child: Icon(
+                                    Icons.done,
+                                    color: Colors.green,
+                                    size: 50,
+                                  )),
+                                  content: Text("Booking successful!"),
+                                );
+                              });
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen(
+                                      movies: movies,
+                                      userName: userName ?? "Bono user",
                                     )),
-                                    content: Text("Booking successful!"),
-                                  );
-                                });
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen(
-                                        movies: movies,
-                                        userName: userName ?? "Guest",
-                                      )),
-                            );
-                          } else {
-                            showDialogCustom(context,
-                                "Please select a date, time, hall, and at least one seat.");
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          'Book',
-                          style: TextStyle(fontSize: 18, color: Colors.purple),
-                        ),
-                      ),
+                          );
+                        } else {
+                          showDialogCustom(context,
+                              "Please select a date, time, hall, and at least one seat.");
+                        }
+                      },
+                      text: 'Book',
                     ),
                   ],
                 ),

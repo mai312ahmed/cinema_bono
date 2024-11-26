@@ -1,8 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:cinema_bono/methods/helper_methods.dart';
-import 'package:cinema_bono/views/splash_screen.dart';
+import 'package:cinema_bono/common%20widget/general_button.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cinema_bono/methods/helper_methods.dart';
+import 'package:cinema_bono/common%20widget/background.dart';
+
 import 'select_time_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -90,35 +94,21 @@ class DetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        showloading(context);
+                  GeneralButton(
+                    onPressed: () async {
+                      showloading(context);
 
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SelectTimeScreen(
-                              movieDetails: movieDetails,
-                            ),
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SelectTimeScreen(
+                            movieDetails: movieDetails,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
                         ),
-                      ),
-                      child: Text(
-                        'Book Now for ${movieDetails['price']}',
-                        style:
-                            const TextStyle(fontSize: 18, color: Colors.purple),
-                      ),
-                    ),
+                      );
+                    },
+                    text: 'Book Now for ${movieDetails['price']}',
                   ),
                 ],
               ),
@@ -143,7 +133,7 @@ class DetailsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start, // لضبط النصوص العمودية
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "$label : ",

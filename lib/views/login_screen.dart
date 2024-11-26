@@ -2,8 +2,10 @@
 
 import 'package:cinema_bono/methods/get_data_methods.dart';
 import 'package:cinema_bono/methods/login_method.dart';
+import 'package:cinema_bono/common%20widget/background.dart';
+import 'package:cinema_bono/common%20widget/general_button.dart';
+import 'package:cinema_bono/common%20widget/logo_section.dart';
 import 'package:cinema_bono/views/signup_screen.dart';
-import 'package:cinema_bono/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 
@@ -71,7 +73,7 @@ class LoginScreen extends StatelessWidget {
                       obscureText: true,
                     ),
                     const SizedBox(height: 30),
-                    ElevatedButton(
+                    GeneralButton(
                       onPressed: () async {
                         if (formstate.currentState!.validate()) {
                           if (await login(context,
@@ -85,23 +87,13 @@ class LoginScreen extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen(
                                         movies: movies,
-                                        userName: userName ?? "Guest",
+                                        userName: userName ?? "Bono User",
                                       )),
                             );
                           }
                         }
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(fontSize: 20, color: Colors.purple),
-                      ),
+                      text: 'Login',
                     ),
                     Center(
                       child: TextButton(

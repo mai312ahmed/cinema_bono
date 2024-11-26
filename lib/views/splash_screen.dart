@@ -1,4 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:cinema_bono/methods/get_data_methods.dart';
+import 'package:cinema_bono/common%20widget/background.dart';
+import 'package:cinema_bono/common%20widget/logo_section.dart';
+import 'package:cinema_bono/views/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 
@@ -10,16 +15,32 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String? userName;
+  List<Map<String, dynamic>> movies = [];
+  checkUserStatus() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      userName = await getUserInfo();
+      movies = await getMovies();
+    }
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => user != null
+                ? HomeScreen(
+                    userName: userName ?? "Bono user",
+                    movies: movies,
+                  )
+                : const LoginScreen()),
+      );
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
-    });
+    checkUserStatus();
   }
 
   @override
@@ -59,57 +80,6 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class Background extends StatelessWidget {
-  const Background({
-    super.key,
-    required this.image,
-  });
-  final String image;
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.asset(
-          image,
-          width: MediaQuery.sizeOf(context).width,
-          height: MediaQuery.sizeOf(context).height,
-          fit: BoxFit.fill,
-        ),
-        Container(
-          width: MediaQuery.sizeOf(context).width,
-          height: MediaQuery.sizeOf(context).height,
-          color: const Color.fromARGB(152, 116, 12, 176),
-        ),
-      ],
-    );
-  }
-}
-
-class Logo extends StatelessWidget {
-  const Logo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: const Center(
-        child: Text(
-          "Cinema Bono",
-          style: TextStyle(
-              color: Colors.purple, fontSize: 30, fontWeight: FontWeight.bold),
-        ),
       ),
     );
   }

@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:cinema_bono/methods/get_data_methods.dart';
 import 'package:cinema_bono/methods/signup_method.dart';
+import 'package:cinema_bono/common%20widget/background.dart';
+import 'package:cinema_bono/common%20widget/general_button.dart';
+import 'package:cinema_bono/common%20widget/logo_section.dart';
 import 'package:cinema_bono/views/login_screen.dart';
-import 'package:cinema_bono/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 
@@ -90,40 +92,29 @@ class SignUpScreen extends StatelessWidget {
                       obscureText: true,
                     ),
                     const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (formstate.currentState!.validate()) {
-                          if (await signup(context,
-                              email: email,
-                              password: password,
-                              userName: userName)) {
-                            var userName = await getUserInfo();
-                            List<Map<String, dynamic>> movies =
-                                await getMovies();
-                            Navigator.pop(context);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen(
-                                        movies: movies,
-                                        userName: userName ?? "Guest",
-                                      )),
-                            );
+                    GeneralButton(
+                        onPressed: () async {
+                          if (formstate.currentState!.validate()) {
+                            if (await signup(context,
+                                email: email,
+                                password: password,
+                                userName: userName)) {
+                              var userName = await getUserInfo();
+                              List<Map<String, dynamic>> movies =
+                                  await getMovies();
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen(
+                                          movies: movies,
+                                          userName: userName ?? "Bono user",
+                                        )),
+                              );
+                            }
                           }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 20, color: Colors.purple),
-                      ),
-                    ),
+                        },
+                        text: 'Sign Up'),
                     Center(
                       child: TextButton(
                         onPressed: () {
